@@ -1,5 +1,6 @@
 package com.example.yejt.olddriver;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 /**
  * Created by Yejt on 2017/8/13 0013.
  */
-public class SearchResult implements Comparable<SearchResult>
+public class SearchResult implements Comparable<SearchResult>, Serializable
 {
     public String title;
     public String linkToDetail;

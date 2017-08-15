@@ -1,6 +1,7 @@
 package com.example.yejt.olddriver;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -45,13 +46,17 @@ public class MainActivity extends AppCompatActivity
         });
 
 
-        Intent intent = new Intent(Intent.ACTION_VIEW);
+        final Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
         resListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-
+                SearchResult item = (SearchResult)parent.getItemAtPosition(position);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("Item", item);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
 
