@@ -25,4 +25,11 @@ public class SearchResult implements Comparable<SearchResult>, Serializable
         return o.downloadHot - this.downloadHot;
     }
 
+    @Override
+    public String toString()
+    {
+        return title + '\n' +
+                "文件大小: " + size + '\n'
+                + "Magnet: " + magnetCode + "\n";
+    }
 }

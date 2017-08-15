@@ -12,6 +12,7 @@ import android.view.View;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 
@@ -48,7 +49,7 @@ public class DetailsActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(SearchResult searchResult)
         {
-
+            // TODO: Show results
         }
 
         @Override
@@ -60,15 +61,16 @@ public class DetailsActivity extends AppCompatActivity
             {
                 doc = Jsoup.connect(SearchContract.PREFIX_DETAIL + input.linkToDetail).get();
                 String magnetCode = doc.getElementById("wall").child(1).child(0).text();
-                Element docListElement = doc.getElementById("wall").child(2);
-                //TODO: Get doc list Strings
-
+                Elements docListElement = doc.getElementById("wall").child(2).children();
+                for(Element e : docListElement)
+                    input.docList.add(e.text());
             }
             catch (IOException e)
             {
                 Log.e("Details", "Connection failed");
             }
 
+            return input;
         }
     }
 
