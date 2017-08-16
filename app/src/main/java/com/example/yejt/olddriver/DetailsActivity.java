@@ -11,6 +11,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -37,10 +38,12 @@ public class DetailsActivity extends AppCompatActivity
         SearchResult item = (SearchResult)intent.getSerializableExtra("Item");
 
         this.setTitle(item.title);
+
         SearchForDetailsTask searchForDetailsTask = new SearchForDetailsTask();
         searchForDetailsTask.execute(item);
 
         FloatingActionButton floatingActionButton = (FloatingActionButton)findViewById(R.id.floatingActionButton);
+        FloatingActionButton shareButton = (FloatingActionButton)findViewById(R.id.shareFloatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -54,6 +57,25 @@ public class DetailsActivity extends AppCompatActivity
                 Toast.makeText(DetailsActivity.this, "磁力链复制成功!", Toast.LENGTH_LONG).show();
             }
         });
+
+        shareButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
+                TextView textView = (TextView)findViewById(R.id.details_magnet_code);
+                TextView listView = (TextView)findViewById(R.id.details_doc_list);
+                String shareStr = "Title: " + DetailsActivity.this.getTitle() + "\n\n"
+                        + "Magnet Code: " + textView.getText() + "\n\n"
+                        + "Doc list: " + listView.getText();
+                intent.putExtra(Intent.EXTRA_TEXT, shareStr);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(Intent.createChooser(intent, getTitle()));
+            }
+        });
     }
 
 
@@ -62,13 +84,6 @@ public class DetailsActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(SearchResult searchResult)
         {
-            AppBarLayout appBarLayout = (AppBarLayout)findViewById(R.id.appbar);
-            appBarLayout.setBackgroundColor(getBackgroundColor(searchResult.downloadHot));
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-            toolbar.setBackgroundColor(getBackgroundColor(searchResult.downloadHot));
-            FloatingActionButton floatingActionButton = (FloatingActionButton)findViewById(R.id.floatingActionButton);
-            floatingActionButton.setBackgroundColor(getBackgroundColor(searchResult.downloadHot));
-            toolbar.setTitle(searchResult.title);
 
             TextView hotNumText = (TextView)findViewById(R.id.details_hot_num);
             hotNumText.setText("热度:" + Integer.toString(searchResult.downloadHot));

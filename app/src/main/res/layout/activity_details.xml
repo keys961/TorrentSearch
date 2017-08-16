@@ -14,34 +14,6 @@
         android:theme="@style/AppTheme"
         android:background="@color/colorWhite">
 
-    <android.support.design.widget.AppBarLayout
-            android:id="@+id/appbar"
-            android:layout_height="192dp"
-            android:layout_width="match_parent"
-            android:theme="@style/AppTheme">
-
-        <android.support.design.widget.CollapsingToolbarLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:toolbarId="@+id/toolbar"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                >
-
-            <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_height="?attr/actionBarSize"
-                    android:layout_width="match_parent"
-                    app:titleTextAppearance="@style/AppTheme.NoActionBar"
-                    android:textColor="@color/colorWhite"
-                    android:titleTextColor="@color/colorWhite"
-                    app:titleTextColor="@color/colorWhite"
-                    android:theme="@style/AppTheme"
-                    app:titleMargin="2dp"
-                    android:textDirection="inherit">
-            </android.support.v7.widget.Toolbar>
-        </android.support.design.widget.CollapsingToolbarLayout>
-    </android.support.design.widget.AppBarLayout>
-
     <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -138,5 +110,17 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:layout_margin="16dp"
-            />
+            app:backgroundTint="@android:color/holo_blue_bright"/>
+
+    <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:fabSize="mini"
+            app:srcCompat="@android:drawable/ic_menu_share"
+            android:id="@+id/shareFloatingActionButton"
+            app:backgroundTint="?attr/colorPrimary"
+            android:layout_above="@+id/floatingActionButton"
+            android:layout_alignLeft="@+id/floatingActionButton"
+            android:layout_alignStart="@+id/floatingActionButton"/>
 </RelativeLayout>
