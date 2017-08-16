@@ -1,14 +1,22 @@
 package com.example.yejt.olddriver;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -24,32 +32,60 @@ public class DetailsActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         Intent intent = this.getIntent();
         SearchResult item = (SearchResult)intent.getSerializableExtra("Item");
 
-        fab.setOnClickListener(new View.OnClickListener()
+        this.setTitle(item.title);
+        SearchForDetailsTask searchForDetailsTask = new SearchForDetailsTask();
+        searchForDetailsTask.execute(item);
+
+        FloatingActionButton floatingActionButton = (FloatingActionButton)findViewById(R.id.floatingActionButton);
+        floatingActionButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View view)
+            public void onClick(View v)
             {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                ClipboardManager cm = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+                TextView magnetCodeText = (TextView)findViewById(R.id.details_magnet_code);
+                ClipData data = ClipData.newPlainText("text", magnetCodeText.getText());
+                cm.setPrimaryClip(data);
+
+                Toast.makeText(DetailsActivity.this, "磁力链复制成功!", Toast.LENGTH_LONG).show();
             }
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 
-    public class SearchForDetails extends AsyncTask<SearchResult, Void, SearchResult>
+    public class SearchForDetailsTask extends AsyncTask<SearchResult, Void, SearchResult>
     {
         @Override
         protected void onPostExecute(SearchResult searchResult)
         {
-            // TODO: Show results
+            AppBarLayout appBarLayout = (AppBarLayout)findViewById(R.id.appbar);
+            appBarLayout.setBackgroundColor(getBackgroundColor(searchResult.downloadHot));
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            toolbar.setBackgroundColor(getBackgroundColor(searchResult.downloadHot));
+            FloatingActionButton floatingActionButton = (FloatingActionButton)findViewById(R.id.floatingActionButton);
+            floatingActionButton.setBackgroundColor(getBackgroundColor(searchResult.downloadHot));
+            toolbar.setTitle(searchResult.title);
+
+            TextView hotNumText = (TextView)findViewById(R.id.details_hot_num);
+            hotNumText.setText("热度:" + Integer.toString(searchResult.downloadHot));
+
+            TextView uploadDateText = (TextView)findViewById(R.id.details_upload_date);
+            uploadDateText.setText("日期:" + searchResult.createdDate.toString());
+
+            TextView sizeText = (TextView)findViewById(R.id.details_size);
+            sizeText.setText("大小:" + searchResult.size);
+
+            TextView magnetText = (TextView)findViewById(R.id.details_magnet_code);
+            magnetText.setText(searchResult.magnetCode);
+
+            TextView listText = (TextView)findViewById(R.id.details_doc_list);
+            int i = 1;
+            for(String s : searchResult.docList)
+                listText.append("【" + i++ + "】: " + s + "\n\n");
         }
 
         @Override
@@ -61,9 +97,10 @@ public class DetailsActivity extends AppCompatActivity
             {
                 doc = Jsoup.connect(SearchContract.PREFIX_DETAIL + input.linkToDetail).get();
                 String magnetCode = doc.getElementById("wall").child(1).child(0).text();
+                input.magnetCode = magnetCode;
                 Elements docListElement = doc.getElementById("wall").child(2).children();
                 for(Element e : docListElement)
-                    input.docList.add(e.text());
+                    input.docList.add(e.ownText());
             }
             catch (IOException e)
             {
@@ -74,4 +111,23 @@ public class DetailsActivity extends AppCompatActivity
         }
     }
 
+    private int getBackgroundColor(int hotNum)
+    {
+        int colorResourceId;
+        switch (hotNum / 50)
+        {
+            case 0: colorResourceId = R.color.level_1; break;
+            case 1: colorResourceId = R.color.level_2; break;
+            case 2: colorResourceId = R.color.level_3; break;
+            case 3: colorResourceId = R.color.level_4; break;
+            case 4: colorResourceId = R.color.level_5; break;
+            case 5: colorResourceId = R.color.level_6; break;
+            case 6: colorResourceId = R.color.level_7; break;
+            case 7: colorResourceId = R.color.level_8; break;
+            case 8: colorResourceId = R.color.level_9; break;
+            case 9: colorResourceId = R.color.level_10; break;
+            default: colorResourceId = R.color.level_10;
+        }
+        return ContextCompat.getColor(this, colorResourceId);
+    }
 }

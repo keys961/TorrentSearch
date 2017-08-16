@@ -56,10 +56,6 @@ public class SearchTask extends AsyncTask<String, Integer, List<SearchResult>>
     @Override
     protected List<SearchResult> doInBackground(String... queries)
     {
-
-        if(adapter != null)
-            adapter.clear();
-        //listView.setAdapter(adapter);
         String url = SearchContract.PREFIX + queries[0] + SearchContract.POSTFIX;
         Document doc = null;
         try
@@ -122,9 +118,18 @@ public class SearchTask extends AsyncTask<String, Integer, List<SearchResult>>
     }
 
     @Override
+    protected void onPreExecute()
+    {
+        this.progressBar.setVisibility(View.VISIBLE);
+        this.listView.setVisibility(View.INVISIBLE);
+        if(adapter != null)
+            adapter.clear();
+    }
+
+    @Override
     protected void onProgressUpdate(Integer... values)
     {
-        progressBar.setVisibility(View.VISIBLE);
+
         progressBar.setProgress(values[0]);
     }
 }

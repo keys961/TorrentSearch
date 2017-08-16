@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">番号搜索器</string>
     <string name="title_activity_details">DetailsActivity</string>
-    <string name="title_title">标题</string>
-    <string name="title_magnet_code">磁力链</string>
-    <string name="title_upload_date">上传日期</string>
-    <string name="title_download_hot">下载热度</string>
-    <string name="title_doc_list">文件列表</string>
+    <string name="title_title">文件标题：</string>
+    <string name="title_magnet_code">磁力链：</string>
+    <string name="title_upload_date">上传日期：</string>
+    <string name="title_download_hot">下载热度：</string>
+    <string name="title_doc_list">文件列表：</string>
 
     <string name="title_copy_magnet_code">拷贝磁力链接</string>
     <string name="title_share">分享</string>

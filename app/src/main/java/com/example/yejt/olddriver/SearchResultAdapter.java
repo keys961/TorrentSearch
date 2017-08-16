@@ -44,13 +44,13 @@ public class SearchResultAdapter extends ArrayAdapter<SearchResult>
         titleText.setText(title);
         //Size
         TextView sizeText = (TextView)listItemView.findViewById(R.id.size);
-        sizeText.setText("大小: " + size);
+        sizeText.setText("大小:" + size);
         //HotNum
         TextView hotText = (TextView)listItemView.findViewById(R.id.hotNum);
-        hotText.setText("热度：" + hotNum);
+        hotText.setText("热度:" + hotNum);
         //Date
         TextView dateText = (TextView)listItemView.findViewById(R.id.uploadDate);
-        dateText.setText("日期: " + uploadDate);
+        dateText.setText("日期:" + uploadDate);
 
         //GradientDrawable circle = (GradientDrawable)listIdText.getBackground();
 
