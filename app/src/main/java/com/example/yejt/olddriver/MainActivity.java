@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onQueryTextSubmit(String query)
             {
-                SearchTask searchTask = new SearchTask(MainActivity.this, resListView, progressBar, emptyView);
+                SearchTask searchTask = new Sobt8SearchTask(MainActivity.this, resListView, progressBar, emptyView);
                 searchTask.execute(query);
                 return true;
             }

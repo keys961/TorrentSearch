@@ -27,7 +27,6 @@ import java.io.IOException;
 
 public class DetailsActivity extends AppCompatActivity
 {
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -39,7 +38,12 @@ public class DetailsActivity extends AppCompatActivity
 
         this.setTitle(item.title);
 
-        SearchForDetailsTask searchForDetailsTask = new SearchForDetailsTask();
+        SearchForDetailsTask searchForDetailsTask = new Sobt8SearchForDetailsTask(this,
+                (TextView)findViewById(R.id.details_hot_num),
+                (TextView)findViewById(R.id.details_upload_date),
+                (TextView)findViewById(R.id.details_magnet_code),
+                (TextView)findViewById(R.id.details_size),
+                (TextView)findViewById(R.id.details_doc_list));
         searchForDetailsTask.execute(item);
 
         FloatingActionButton floatingActionButton = (FloatingActionButton)findViewById(R.id.floatingActionButton);
@@ -76,73 +80,5 @@ public class DetailsActivity extends AppCompatActivity
                 startActivity(Intent.createChooser(intent, getTitle()));
             }
         });
-    }
-
-
-    public class SearchForDetailsTask extends AsyncTask<SearchResult, Void, SearchResult>
-    {
-        @Override
-        protected void onPostExecute(SearchResult searchResult)
-        {
-
-            TextView hotNumText = (TextView)findViewById(R.id.details_hot_num);
-            hotNumText.setText("热度:" + Integer.toString(searchResult.downloadHot));
-
-            TextView uploadDateText = (TextView)findViewById(R.id.details_upload_date);
-            uploadDateText.setText("日期:" + searchResult.createdDate.toString());
-
-            TextView sizeText = (TextView)findViewById(R.id.details_size);
-            sizeText.setText("大小:" + searchResult.size);
-
-            TextView magnetText = (TextView)findViewById(R.id.details_magnet_code);
-            magnetText.setText(searchResult.magnetCode);
-
-            TextView listText = (TextView)findViewById(R.id.details_doc_list);
-            int i = 1;
-            for(String s : searchResult.docList)
-                listText.append("【" + i++ + "】: " + s + "\n\n");
-        }
-
-        @Override
-        protected SearchResult doInBackground(SearchResult... searchResults)
-        {
-            SearchResult input = searchResults[0];
-            Document doc;
-            try
-            {
-                doc = Jsoup.connect(SearchContract.PREFIX_DETAIL + input.linkToDetail).get();
-                String magnetCode = doc.getElementById("wall").child(1).child(0).text();
-                input.magnetCode = magnetCode;
-                Elements docListElement = doc.getElementById("wall").child(2).children();
-                for(Element e : docListElement)
-                    input.docList.add(e.ownText());
-            }
-            catch (IOException e)
-            {
-                Log.e("Details", "Connection failed");
-            }
-
-            return input;
-        }
-    }
-
-    private int getBackgroundColor(int hotNum)
-    {
-        int colorResourceId;
-        switch (hotNum / 50)
-        {
-            case 0: colorResourceId = R.color.level_1; break;
-            case 1: colorResourceId = R.color.level_2; break;
-            case 2: colorResourceId = R.color.level_3; break;
-            case 3: colorResourceId = R.color.level_4; break;
-            case 4: colorResourceId = R.color.level_5; break;
-            case 5: colorResourceId = R.color.level_6; break;
-            case 6: colorResourceId = R.color.level_7; break;
-            case 7: colorResourceId = R.color.level_8; break;
-            case 8: colorResourceId = R.color.level_9; break;
-            case 9: colorResourceId = R.color.level_10; break;
-            default: colorResourceId = R.color.level_10;
-        }
-        return ContextCompat.getColor(this, colorResourceId);
     }
 }

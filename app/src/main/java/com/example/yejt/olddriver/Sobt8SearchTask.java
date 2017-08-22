@@ -1,44 +1,29 @@
 package com.example.yejt.olddriver;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
-
 import android.util.Log;
 import android.view.View;
-import android.widget.*;
-import org.jsoup.*;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Yejt on 2017/8/14 0014.
+ * Created by Yejt on 2017/8/22 0022.
  */
-public abstract class SearchTask extends AsyncTask<String, Integer, List<SearchResult>>
+public class Sobt8SearchTask extends SearchTask
 {
-    protected List<SearchResult> list = new ArrayList<>();
-
-    protected ProgressBar progressBar;
-    protected ListView listView;
-    protected Context context;
-    protected TextView emptyView;
-    protected SearchResultAdapter adapter;
-
-    public SearchTask(Context context, ListView listView, ProgressBar progressBar, TextView emptyView)
+    public Sobt8SearchTask(Context context, ListView listView, ProgressBar progressBar, TextView emptyView)
     {
-        super();
-        this.context = context;
-        this.listView = listView;
-        this.progressBar = progressBar;
-        this.emptyView = emptyView;
+        super(context, listView, progressBar, emptyView);
     }
 
     @Override
@@ -56,7 +41,8 @@ public abstract class SearchTask extends AsyncTask<String, Integer, List<SearchR
     @Override
     protected List<SearchResult> doInBackground(String... queries)
     {
-        String url = SearchContract.Sobt8Contract.PREFIX + queries[0] + SearchContract.Sobt8Contract.POSTFIX;
+        String url = SearchContract.Sobt8Contract.PREFIX + queries[0] +
+                SearchContract.Sobt8Contract.POSTFIX;
         Document doc = null;
         try
         {
@@ -86,8 +72,7 @@ public abstract class SearchTask extends AsyncTask<String, Integer, List<SearchR
             try
             {
                 doc = Jsoup.connect(SearchContract.Sobt8Contract.PREFIX + queries[0] +
-                        SearchContract.Sobt8Contract.INFIX + i +
-                        SearchContract.Sobt8Contract.POSTFIX).get();
+                        SearchContract.Sobt8Contract.INFIX + i + SearchContract.Sobt8Contract.POSTFIX).get();
             }
             catch (IOException e)
             {
@@ -130,6 +115,7 @@ public abstract class SearchTask extends AsyncTask<String, Integer, List<SearchR
     @Override
     protected void onProgressUpdate(Integer... values)
     {
+
         progressBar.setProgress(values[0]);
     }
 }
