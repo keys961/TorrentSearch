@@ -3,7 +3,7 @@ package com.example.yejt.olddriver;
 /**
  * Created by Yejt on 2017/8/15 0015.
  */
-public class SearchContract
+public final class SearchContract
 {
     public static int SOURCE_SOBT8 = 0;
     public static int SOURCE_TORRENT_KITTY = 1;
