@@ -15,7 +15,9 @@ public class SearchFactory implements Serializable
 {
     private int source;
 
-    private static SearchFactory factory;
+    private static SearchFactory sobt8Factory;
+
+    private static SearchFactory torrentKittyFactory;
 
     private SearchFactory(int source)
     {
@@ -29,9 +31,20 @@ public class SearchFactory implements Serializable
 
     public static SearchFactory getFactory(int source)
     {
-        if(factory == null || source != factory.getSource())
-            return factory = new SearchFactory(source);
-        return factory;
+        switch (source)
+        {
+            case SearchContract.SOURCE_SOBT8:
+                if(sobt8Factory == null)
+                    return sobt8Factory = new SearchFactory(SearchContract.SOURCE_SOBT8);
+                return sobt8Factory;
+            case SearchContract.SOURCE_TORRENT_KITTY:
+                if(torrentKittyFactory == null)
+                    return torrentKittyFactory = new SearchFactory(SearchContract.SOURCE_TORRENT_KITTY);
+                return torrentKittyFactory;
+        }
+        return (sobt8Factory == null) ?
+                sobt8Factory = new SearchFactory(SearchContract.SOURCE_SOBT8) :
+                sobt8Factory;
     }
 
     public SearchTask getSearchTask(Context context, ListView listView, ProgressBar progressBar,
