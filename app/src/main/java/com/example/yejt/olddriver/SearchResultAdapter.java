@@ -47,7 +47,10 @@ public class SearchResultAdapter extends ArrayAdapter<SearchResult>
         sizeText.setText("大小:" + size);
         //HotNum
         TextView hotText = (TextView)listItemView.findViewById(R.id.hotNum);
-        hotText.setText("热度:" + hotNum);
+        if(hotNum >= 0)
+            hotText.setText("热度:" + hotNum);
+        else
+            hotText.setText("热度:" + "未知");
         //Date
         TextView dateText = (TextView)listItemView.findViewById(R.id.uploadDate);
         dateText.setText("日期:" + uploadDate);

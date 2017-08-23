@@ -4,15 +4,19 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 
 public class MainActivity extends AppCompatActivity
 {
-    SearchView searchView;
-    ListView resListView;
-    ProgressBar progressBar;
-    TextView emptyView;
+    private SearchView searchView;
+    private ListView resListView;
+    private ProgressBar progressBar;
+    private TextView emptyView;
+
+    private int source = SearchContract.SOURCE_SOBT8;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -33,7 +37,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onQueryTextSubmit(String query)
             {
-                SearchTask searchTask = new Sobt8SearchTask(MainActivity.this, resListView, progressBar, emptyView);
+                SearchFactory factory = SearchFactory.getFactory(source);
+                SearchTask searchTask = factory.getSearchTask(MainActivity.this, resListView, progressBar, emptyView);
                 searchTask.execute(query);
                 return true;
             }
@@ -55,6 +60,7 @@ public class MainActivity extends AppCompatActivity
                 SearchResult item = (SearchResult)parent.getItemAtPosition(position);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("Item", item);
+                bundle.putSerializable("Factory", SearchFactory.getFactory(source));
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -62,4 +68,36 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.source_sobt8:
+                if(source != SearchContract.SOURCE_SOBT8)
+                {
+                    source = SearchContract.SOURCE_SOBT8;
+                    resListView.setAdapter(null);
+                }
+                break;
+            case R.id.source_torrent_kitty:
+                if(source != SearchContract.SOURCE_TORRENT_KITTY)
+                {
+                    source = SearchContract.SOURCE_TORRENT_KITTY;
+                    resListView.setAdapter(null);
+                }
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

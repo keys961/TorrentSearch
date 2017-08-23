@@ -35,14 +35,14 @@ public class DetailsActivity extends AppCompatActivity
 
         Intent intent = this.getIntent();
         SearchResult item = (SearchResult)intent.getSerializableExtra("Item");
-
+        SearchFactory factory = (SearchFactory)intent.getSerializableExtra("Factory");
         this.setTitle(item.title);
 
-        SearchForDetailsTask searchForDetailsTask = new Sobt8SearchForDetailsTask(this,
+        SearchForDetailsTask searchForDetailsTask = factory.getSearchForDetailsTask(this,
                 (TextView)findViewById(R.id.details_hot_num),
                 (TextView)findViewById(R.id.details_upload_date),
-                (TextView)findViewById(R.id.details_magnet_code),
                 (TextView)findViewById(R.id.details_size),
+                (TextView)findViewById(R.id.details_magnet_code),
                 (TextView)findViewById(R.id.details_doc_list));
         searchForDetailsTask.execute(item);
 

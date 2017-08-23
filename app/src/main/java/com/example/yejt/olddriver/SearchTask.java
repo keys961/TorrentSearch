@@ -123,6 +123,7 @@ public abstract class SearchTask extends AsyncTask<String, Integer, List<SearchR
     {
         this.progressBar.setVisibility(View.VISIBLE);
         this.listView.setVisibility(View.INVISIBLE);
+        this.list.clear();
         if(adapter != null)
             adapter.clear();
     }

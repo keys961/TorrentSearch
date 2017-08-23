@@ -24,6 +24,7 @@ public abstract class SearchForDetailsTask extends AsyncTask<SearchResult, Void,
     protected TextView magnetText;
     protected TextView listText;
 
+
     public SearchForDetailsTask(Context context, TextView hotNumText, TextView uploadDateText,
                                 TextView sizeText, TextView magnetText, TextView listText)
     {

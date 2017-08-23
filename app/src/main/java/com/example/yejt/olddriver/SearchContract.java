@@ -5,8 +5,8 @@ package com.example.yejt.olddriver;
  */
 public final class SearchContract
 {
-    public static int SOURCE_SOBT8 = 0;
-    public static int SOURCE_TORRENT_KITTY = 1;
+    public static final int SOURCE_SOBT8 = 0;
+    public static final int SOURCE_TORRENT_KITTY = 1;
 
     public class Sobt8Contract
     {

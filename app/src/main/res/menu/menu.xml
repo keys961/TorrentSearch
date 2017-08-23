@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+            android:id="@+id/source_menu"
+            android:title="选择搜索源">
+        <menu>
+            <item
+                    android:id="@+id/source_sobt8"
+                    android:orderInCategory="100"
+                    android:title="sobt8.org"
+                    android:checkable="false"
+                    />
+            <item
+                    android:id="@+id/source_torrent_kitty"
+                    android:orderInCategory="100"
+                    android:title="torrentkitty.com"
+                    android:checkable="false"
+                    />
+        </menu>
+    </item>
+
+
+</menu>
